@@ -1,0 +1,23 @@
+# users: Sarah Needham, Kathrin Scherer, 
+# sample descripton: wtEGFR 5nM AffiCF640R
+# comment: 
+folder,track id,Im,Id,It,Itet,Ibl,Ibr,frame start,frame stop,mean,sigma,SEM
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20141103_0001_0030_1c0e19f1-deff-42bd-9140-9c1f90caffd9,91,x,,,,,,95,202,,,
+,,x,,,,,,208,258,,,
+,,,x,,,,,37,86,,,
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20141103_0001_0030_1c0e19f1-deff-42bd-9140-9c1f90caffd9,329,x,,,,,,97,166,,,
+,,x,,,,,,174,253,,,
+,,,x,,,,,53,63,,,
+,,,x,,,,,65,71,,,
+,,,x,,,,,74,91,,,
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20141103_0001_0030_1c0e19f1-deff-42bd-9140-9c1f90caffd9,353,x,,,,,,227,345,,,
+,,,x,,,,,119,158,,,
+,,,x,,,,,171,221,,,
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20141103_0001_0030_1c0e19f1-deff-42bd-9140-9c1f90caffd9,502,x,,,,,,123,143,,,
+,,,x,,,,,106,116,,,
+,,,x,,,,,94,104,,,
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20141103_0001_0030_1c0e19f1-deff-42bd-9140-9c1f90caffd9,1812,x,,,,,,251,261,,,
+,,x,,,,,,263,272,,,
+,,x,,,,,,274,360,,,
+,,,x,,,,,41,200,,,
+,,,x,,,,,204,243,,,

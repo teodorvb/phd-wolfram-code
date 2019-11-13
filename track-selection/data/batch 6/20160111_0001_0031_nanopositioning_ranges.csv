@@ -1,0 +1,13 @@
+# users: Sarah Needham
+# sample descripton: wtEGFR+EGF 30nM (8+22)_top-up
+# comment: 
+folder,track id,Im,Id,It,Itet,Ibl,Ibr,frame start,frame stop,mean,sigma,SEM
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20160111_0001_0031_2e3cab41-6828-498e-96e5-9f758dd011f1,193,x,,,,,,152,165,,,
+,,x,,,,,,167,180,,,
+,,,x,,,,,117,146,,,
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20160111_0001_0031_2e3cab41-6828-498e-96e5-9f758dd011f1,379,x,,,,,,371,440,,,
+,,,x,,,,,329,368,,,
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20160111_0001_0031_2e3cab41-6828-498e-96e5-9f758dd011f1,4173,x,,,,,,137,148,,,
+,,x,,,,,,150,153,,,
+,,x,,,,,,155,174,,,
+,,,x,,,,,190,239,,,

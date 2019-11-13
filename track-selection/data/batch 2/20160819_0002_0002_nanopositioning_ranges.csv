@@ -1,0 +1,26 @@
+# users: Sarah Needham
+# sample descripton: I942E_EGFR_Affibody
+# comment: 
+folder,track id,Im,Id,It,Itet,Ibl,Ibr,frame start,frame stop,mean,sigma,SEM
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20160819_0002_0002_2f6e9d15-bf27-4280-b734-fc114d23bebf,230,x,,,,,,210,330,,,,170,350
+,,,x,,,,,170,185,,,
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20160819_0002_0002_2f6e9d15-bf27-4280-b734-fc114d23bebf,353,x,,,,,,293,350,,,,170,350
+,,,x,,,,,171,290,,,
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20160819_0002_0002_2f6e9d15-bf27-4280-b734-fc114d23bebf,360,x,,,,,,282,288,,,,170,350
+,,x,,,,,,291,294,,,
+,,x,,,,,,296,304,,,
+,,x,,,,,,306,315,,,
+,,x,,,,,,317,323,,,
+,,x,,,,,,325,329,,,
+,,x,,,,,,331,337,,,
+,,,x,,,,,260,271,,,
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20160819_0002_0002_2f6e9d15-bf27-4280-b734-fc114d23bebf,5142,x,,,,,,305,308,,,,170,350
+,,x,,,,,,314,318,,,
+,,x,,,,,,329,337,,,
+,,,x,,,,,208,216,,,
+,,,x,,,,,228,233,,,
+,,,x,,,,,235,248,,,
+,,,x,,,,,250,256,,,
+,,,x,,,,,269,278,,,
+,,,x,,,,,285,291,,,
+,,,x,,,,,295,300,,,

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+nano-pos-tool -a ci-len all.csv | grep "      20" | sed 's/\[//' | sed 's/\]//' | sed 's/,//' | sed 's/      //' | tr -s ' ' ','
+

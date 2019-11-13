@@ -1,0 +1,19 @@
+# users: Sarah Needham
+# sample descripton: wtEGFR+EGF 2nM_top-up
+# comment: 
+folder,track id,Im,Id,It,Itet,Ibl,Ibr,frame start,frame stop,mean,sigma,SEM
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20160112_0001_0028_4f4f4bca-8934-4133-a256-7ade4f4695ae,84,x,,,,,,93,147,,,,2,150
+,,,x,,,,,29,91,,,
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20160112_0001_0028_4f4f4bca-8934-4133-a256-7ade4f4695ae,104,x,,,,,,145,150,,,,2,150
+,,,x,,,,,107,136,,,
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20160112_0001_0028_4f4f4bca-8934-4133-a256-7ade4f4695ae,107,x,,,,,,122,150,,,,2,150
+,,,x,,,,,31,111,,,
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20160112_0001_0028_4f4f4bca-8934-4133-a256-7ade4f4695ae,440,x,,,,,,31,50,,,,2,150
+,,,x,,,,,2,21,,,
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20160112_0001_0028_4f4f4bca-8934-4133-a256-7ade4f4695ae,494,x,,,,,,15,27,,,,2,150
+,,x,,,,,,29,40,,,
+,,x,,,,,,62,66,,,
+,,x,,,,,,43,47,,,
+,,x,,,,,,49,52,,,
+,,x,,,,,,54,57,,,
+,,,x,,,,,2,12,,,

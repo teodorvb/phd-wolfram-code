@@ -1,0 +1,16 @@
+# users: Sarah Needham, Kathrin Scherer, 
+# sample descripton: wtEGFR HER1 Affibody CF640R 5nM
+# comment: 
+folder,track id,Im,Id,It,Itet,Ibl,Ibr,frame start,frame stop,mean,sigma,SEM
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20141104_0001_0005_72ae8fe6-516e-49ad-b4d0-f1bd0525a533,35,x,,,,,,45,85,,,,10,430
+,,,x,,,,,20,39,,,
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20141104_0001_0005_72ae8fe6-516e-49ad-b4d0-f1bd0525a533,274,x,,,,,,178,248,,,,10,430
+,,,x,,,,,134,156,,,
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20141104_0001_0005_72ae8fe6-516e-49ad-b4d0-f1bd0525a533,406,x,,,,,,300,328,,,,10,430
+,,x,,,,,,332,351,,,
+,,,x,,,,,139,157,,,
+,,,x,,,,,161,180,,,
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20141104_0001_0005_72ae8fe6-516e-49ad-b4d0-f1bd0525a533,1647,x,,,,,,241,272,,,,10,430
+,,x,,,,,,275,282,,,
+,,x,,,,,,290,430,,,
+,,,x,,,,,116,179,,,

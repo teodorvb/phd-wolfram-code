@@ -1,0 +1,12 @@
+# users: Sarah Needham, Kathrin Scherer, 
+# sample descripton: wtEGFR 5nM AffiCF640R
+# comment: 
+folder,track id,Im,Id,It,Itet,Ibl,Ibr,frame start,frame stop,mean,sigma,SEM
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20141103_0001_0028_27959b8b-7b33-4369-8e4b-dd9ac3bd46af,346,x,,,,,,130,199,,,
+,,,x,,,,,48,115,,,
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20141103_0001_0028_27959b8b-7b33-4369-8e4b-dd9ac3bd46af,369,x,,,,,,165,215,,,
+,,,x,,,,,130,148,,,
+,,,x,,,,,112,123,,,
+/mnt/rclsfserv005/MSMM_analysed/OctopusSM3/20141103_0001_0028_27959b8b-7b33-4369-8e4b-dd9ac3bd46af,608,x,,,,,,305,348,,,
+,,,x,,,,,214,229,,,
+,,,x,,,,,231,268,,,

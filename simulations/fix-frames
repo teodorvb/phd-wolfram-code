@@ -1,0 +1,10 @@
+#!/bin/bash
+cd $1
+for file in *h5*; do
+    if [ "$file" != "${file:0:32}" ]; then
+	if [ "${file:0:9}" == "simulated" ]; then
+	    mv "$file" ${file:0:32}
+	fi
+    fi
+done
+
