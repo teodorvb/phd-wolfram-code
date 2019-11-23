@@ -58,7 +58,7 @@ ExtractIntTrackExtrapolated[record_]:=Block[{
   te = record[[trackEndI]];
 
   {meanIl1,meanXl1,meanYl1} =Mean/@Transpose[
-    TrackLevel[record[[levelsI]][[1]],record[[dataIntI]],First[First[record[[dataIntI]]]]][[All, {2, 4, 5}]]
+    TrackLevel[record[[levelsOldI]][[1]],record[[dataIntI]],First[First[record[[dataIntI]]]]][[All, {2, 4, 5}]]
   ];
 Transpose[({#2/meanIl1,
 Join[
@@ -96,14 +96,14 @@ trackEnd = te - ff+1;
 trackStart = ts - ff +1;
 If[record[[levelsOrderI]]== "L1First",
 croppedStart = Max[ts - 20, ff] -ff + 1;
-croppedEnd = Max@Flatten@record[[levelsI]][[2]] - ff+1,
+croppedEnd = Max@Flatten@record[[levelsOldI]][[2]] - ff+1,
 
-croppedStart = Min@Flatten@record[[levelsI]][[2]]-ff + 1;
+croppedStart = Min@Flatten@record[[levelsOldI]][[2]]-ff + 1;
 croppedEnd = Min[te + 20, lf] -ff + 1
 ];
 
 {meanIl1,meanXl1,meanYl1} =Mean/@Transpose[
-    TrackLevel[record[[levelsI]][[1]],record[[dataIntI]],ff][[All, {2, 4, 5}]]
+    TrackLevel[record[[levelsOldI]][[1]],record[[dataIntI]],ff][[All, {2, 4, 5}]]
 ];
 track = ({#2/meanIl1,Norm/@Transpose[{#4,#5} - {meanXl1, meanYl1}]
 }&)@@Transpose[record[[dataIntI]][[croppedStart;;croppedEnd]]];

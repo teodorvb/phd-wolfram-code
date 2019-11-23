@@ -73,8 +73,8 @@ FindStepL1First[levels_]:= Function[ranges,Block[{t},
 ]@SortBy[Flatten[Transpose@{Table[#1, Length[#2]], #2}&@@@Transpose@{Range[1, Length[levels]],levels}, 1], #[[2, 1]]&];
 
 FindL12Gap[record_]:= If[record[[levelsOrderI]] == "L1Last",
-  FindStepL1Last[record[[levelsI]]],
-  FindStepL1First[record[[levelsI]]]
+  FindStepL1Last[record[[levelsOldI]]],
+  FindStepL1First[record[[levelsOldI]]]
 ];
 
 FeatureShapeRatios[imgData_, firstFrameId_, r_, imgr_, lvl_]:=N@#1/#2&@@Eigenvalues@Covariance@Flatten[Table[{i, j}*#[[r+1+i, r+1+j]], {i, -r, r}, {j, -r,r}], 1]&@ArrayReshape[#, {2imgr+1, 2imgr+1}
@@ -84,7 +84,7 @@ FeatureShape[record_, lvl_]:=Block[{firstfid,r,imgr},
   firstfid = First@First@record[[dataIntI]];
   imgr = (Sqrt@Length@First@record[[dataImgI]]-1)/2;
   r = 3;
-  Mean@Take[#, Floor[0.1Length[#]] ] &@ Sort[FeatureShapeRatios[record[[dataImgI]], firstfid, r, imgr, record[[levelsI]][[lvl]]],Larger]
+  Mean@Take[#, Ceiling[0.1Length[#]] ] &@ Sort[FeatureShapeRatios[record[[dataImgI]], firstfid, r, imgr, record[[levelsOldI]][[lvl]]],Larger]
 ];
 
 smiBgspsf = 1.2;
@@ -99,7 +99,7 @@ smiBgq4I = Flatten@Table[If[# > 3.5smiBgspsf - Sqrt[2] && # < 5.5smiBgspsf + Sqr
 {p, 1, 5}, {q, 1, 5}];
 smiBgAll = Join[smiBgq1I, smiBgq2I, smiBgq3I, smiBgq4I];
 
-SmiBackground[seq_]:= Mean@Take[#, 10]&@Sort[Function[rawImg,
+SmiBackground[seq_]:= Mean@Take[#, Min[Length@#,10]]&@Sort[Function[rawImg,
     4StandardDeviation[rawImg[[smiBgAll]]]/(
       StandardDeviation[rawImg[[smiBgq1I]]] + 
       StandardDeviation[rawImg[[smiBgq2I]]] +
@@ -110,20 +110,20 @@ SmiBackground[seq_]:= Mean@Take[#, 10]&@Sort[Function[rawImg,
 
 
 FramesBeforeAfterL1[record_]:= N@If[record[[levelsOrderI]]=="L1Last",
-  record[[trackEndI]] - Max@Flatten@First@record[[levelsI]],
-  Min@Flatten@First@record[[levelsI]] - record[[trackStartI]]
+  record[[trackEndI]] - Max@Flatten@First@record[[levelsOldI]],
+  Min@Flatten@First@record[[levelsOldI]] - record[[trackStartI]]
 ];
 
 FeatureShapeL1[record_]:= FeatureShape[record, 1];
 FeatureShapeL2[record_]:= FeatureShape[record, 2];
 
-SmiBackgroundL1[record_]:= SmiBackground[TrackLevel[record[[levelsI]][[1]],record[[dataImgI]], First@First@record[[dataIntI]] ]];
-SmiBackgroundL2[record_]:= SmiBackground[TrackLevel[record[[levelsI]][[2]],record[[dataImgI]], First@First@record[[dataIntI]] ]];
+SmiBackgroundL1[record_]:= SmiBackground[TrackLevel[record[[levelsOldI]][[1]],record[[dataImgI]], First@First@record[[dataIntI]] ]];
+SmiBackgroundL2[record_]:= SmiBackground[TrackLevel[record[[levelsOldI]][[2]],record[[dataImgI]], First@First@record[[dataIntI]] ]];
 
 TrackClustering[record_]:=Block[{l1Int, l2Int, firstFrameid},
   firstFrameid = First@First@record[[dataIntI]];
-  l1Int=TrackLevel[record[[levelsI]][[1]],record[[dataIntI]], firstFrameid][[All, 2]];
-  l2Int=TrackLevel[record[[levelsI]][[2]],record[[dataIntI]], firstFrameid][[All, 2]];
+  l1Int=TrackLevel[record[[levelsOldI]][[1]],record[[dataIntI]], firstFrameid][[All, 2]];
+  l2Int=TrackLevel[record[[levelsOldI]][[2]],record[[dataIntI]], firstFrameid][[All, 2]];
   (Mean@l2Int - Mean@l1Int)/(StandardDeviation@l1Int + StandardDeviation@l2Int)
 ];
 
@@ -140,7 +140,7 @@ levels},
 
 track = record[[dataIntI]];
 firstFrameid = track[[1, 1]];
-levels = record[[levelsI]];
+levels = record[[levelsOldI]];
 {l1Mean, l1Std} = {Mean@#, StandardDeviation@#}&@TrackLevel[levels[[1]], track, firstFrameid][[All, 2]];
 {l2Mean, l2Std} = {Mean@#, StandardDeviation@#}&@TrackLevel[levels[[2]], track, firstFrameid][[All, 2]];
 If[Level12Gap[record] == 0,
@@ -166,7 +166,7 @@ IntBeforeAfterL1[record_]:=Block[{
     track
   },
 
-  levels = record[[levelsI]];
+  levels = record[[levelsOldI]];
   track = record[[dataIntI]];
   firstFrameid = track[[1, 1]];
   {l1Mean, l1Std} = {Mean@#, StandardDeviation@#}&@ TrackLevel[levels[[1]], track, firstFrameid][[All, 2]];
@@ -179,11 +179,11 @@ IntBeforeAfterL1[record_]:=Block[{
 RatioRealPointsL1[record_]:= N[#1["level1points"]/ #1["level1duration"]&@record[[scoresI]]];
 RatioRealPointsL2[record_]:= N[#1["level2points"]/ #1["level2duration"]&@record[[scoresI]]];
 
-FragmentationL1[record_]:=N@Length[record[[levelsI]][[1]]]-1;
-FragmentationL2[record_]:=N@Length[record[[levelsI]][[2]]]-1;
+FragmentationL1[record_]:=N@Length[record[[levelsOldI]][[1]]]-1;
+FragmentationL2[record_]:=N@Length[record[[levelsOldI]][[2]]]-1;
 
-LongestRangeL1[record_]:=N@Max[#2-#1+1&@@@record[[levelsI]][[1]]];
-LongestRangeL2[record_]:=N@Max[#2-#1+1&@@@record[[levelsI]][[2]]];
+LongestRangeL1[record_]:=N@Max[#2-#1+1&@@@record[[levelsOldI]][[1]]];
+LongestRangeL2[record_]:=N@Max[#2-#1+1&@@@record[[levelsOldI]][[2]]];
 
-SignalToNoiseL1[record_]:= Mean@#/StandardDeviation@#&@TrackLevel[record[[levelsI]][[1]], record[[dataIntI]][[All, 2]], First@First@record[[dataIntI]]];
-SignalToNoiseL2[record_]:= Mean@#/StandardDeviation@#&@TrackLevel[record[[levelsI]][[2]], record[[dataIntI]][[All, 2]], First@First@record[[dataIntI]]];
+SignalToNoiseL1[record_]:= Mean@#/StandardDeviation@#&@TrackLevel[record[[levelsOldI]][[1]], record[[dataIntI]][[All, 2]], First@First@record[[dataIntI]]];
+SignalToNoiseL2[record_]:= Mean@#/StandardDeviation@#&@TrackLevel[record[[levelsOldI]][[2]], record[[dataIntI]][[All, 2]], First@First@record[[dataIntI]]];
