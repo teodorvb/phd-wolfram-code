@@ -53,5 +53,5 @@ SmiUnpackRecords  ={
 
 compressPCA[data_, components_]:= Block[{evect},
   evect = Eigenvectors@Covariance@Keys@data;
-  1-> #2&@@@(Transpose[{#1.Transpose[evect[[1;;components]]], #2}] & @@ {Keys@data, Values@data})
+  #1-> #2&@@@(Transpose[{#1.Transpose[evect[[1;;components]]], #2}] & @@ {Keys@data, Values@data})
 ]

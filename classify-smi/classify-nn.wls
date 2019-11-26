@@ -33,6 +33,6 @@ classifyTrail[data_, hus_]:=Block[{train, test, classes},
   index++;
   classes =  Union@Values@data;
   {train, test} = TakeDrop[RandomSample[data],Floor[0.7 Length[data]]];
- (* CloseKernels[];LaunchKernels[4]; *)
-  Transpose@Table[measureNet[hu, train, test,classes], {hu, hus}]
+  CloseKernels[];LaunchKernels[];
+  Transpose@ParallelTable[measureNet[hu, train, test,classes], {hu, hus}]
 ];

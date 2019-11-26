@@ -1,13 +1,22 @@
+#!/usr/bin/python
+
 import numpy as np
 import tensorflow as tf
 import math as m
+import sys as sys
+
+def find_max(predicted):
+    res = np.zeros(np.shape(predicted))
+    for i in range(len(res)):
+        res[i, np.where(predicted[i] == max(predicted[i]))[0][0]] = 1
+    return res
 
 def f1_score(actual, predicted):
-    TP = tf.math.count_nonzero(predicted * actual)
-    TN = tf.math.count_nonzero((predicted - 1) * (actual - 1))
-    FP = tf.math.count_nonzero(predicted * (actual - 1))
-    FN = tf.math.count_nonzero((predicted - 1) * actual)
-    
+    conf = np.matrix(actual).T*np.matrix(find_max(predicted))
+
+    TP = conf[0,0];
+    FP = conf[1, 0];
+    FN = conf[0, 1];
     precision = TP / (TP + FP)
     recall = TP / (TP + FN)
     return 2 * precision * recall / (precision + recall)
@@ -57,13 +66,12 @@ def train_network(hus, data, labels, ep):
         model.fit(train_data, train_labels, epochs=ep);
 
         result[i, :] = np.array([f1_score(train_labels, model.predict(train_data)), f1_score(test_labels, model.predict(test_data))])
-
-        return result
-
-data = np.genfromtxt('data/flimp-manually-selected-2014_2015-cleaned-data.csv', delimiter=',');
-labels = np.genfromtxt('data/flimp-manually-selected-2014_2015-cleaned-labels.csv', delimiter=',');
+    return result
 
 
 
-result = train_network([1, 2, 3], data, labels, 10)
+data = np.genfromtxt(sys.argv[1], delimiter=',');
+labels = np.genfromtxt(sys.argv[2], delimiter=',');
+
+result = train_network(np.array(range(2))+1, data, labels, 100)
 print(result)
