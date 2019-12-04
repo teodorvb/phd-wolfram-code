@@ -1,46 +1,45 @@
 #!/usr/bin/env wolframscript
 (* ::Package:: *)
 
-usedScores = {
-"sec_longest",
-"sec_most_pts",
-"count_sigma_mls_12",
-"cts_loc_sn_l1",
-"cts_loc_sn_l2",
-"cts_slm_l1",
-"cts_slm_l2",
-"stepratio_lvl12",
-"dr12",
-"pos_density_12",
-"pos_error_1",
-"pos_error_2",
-"pos_sigma_mls_12",
-"pos_sigma_locmean_12",
-"semdr12"
-};
-
-ExtractScores[record_]:=
+ExtractScores[record_]:= Block[{level1, level2},
+  {level1, level2} = getLevel12[record, levelsOldI];
+  
   Flatten[{
-    N[record[[scoresI]]/@usedScores],
-    Level12OffLevel[record],
-    IntBeforeAfterL1[record],
-    {GoesToZero[record],
-     SmiBackgroundL1[record],
-     SmiBackgroundL2[record],
-     TrackClustering[record],
-     FeatureShapeL1[record],
-     FeatureShapeL2[record],
-     FragmentationL1[record],
-     FragmentationL2[record],
-     LongestRangeL1[record],
-     LongestRangeL2[record],
-     Level12Gap[record],
-     FramesBeforeAfterL1[record],
-     (*RatioRealPointsL1[record],
-     RatioRealPointsL2[record], *)
-     SignalToNoiseL1[record],
-     SignalToNoiseL2[record]}
-  }] -> If[record[[categoryI]] == 1, yes, no];
+    ctsSLM[record, level1],
+    ctsSLM[record, level2],
+    ctsLocalSN[record, level1],
+    ctsLocalSN[record, level2],
+    trackClustering[record, level1, level2],
+    ratioRealPoints[record, level1],
+    ratioRealPoints[record, level2],
+    fragmentation[record, level1],
+    fragmentation[record, level2],
+    longestRange[record, level1],
+    longestRange[record, level2],
+    smiBackground[record, level1],
+    smiBackground[record, level2],
+    featureShape[record, level1],
+    featureShape[record, level2],
+    stepRatioLvl12[record, level1, level2],
+    goesToZero[record],
+    signalToNoise[record, level1],
+    signalToNoise[record, level2],
+    DR12[record, level1, level2],
+    semDR12[record, level1, level2],
+    posError[record, level1],
+    posError[record, level2],
+    posSigmaMLS[record, level1, level2],
+    posSigmaLocMean[record, level1, level2],
+    posDensity[record, level1, level2],
+    secLongest[record, level1, level2],
+    secMostPoints[record, level1, level2],
+    countSigmaMLS[record, level1, level2],
+    intBeforeAfterL1[record, level1],
+    framesBeforeAfterL1[record, level1],
+    level12Gap[record, level1, level2],
+    level12OffLevel[record, level1, level2]
+  }] -> If[record[[categoryI]] == 1, yes, no]  
+];
 
 ExtractIntTrackExtrapolated[record_]:=Block[{
   meanIl1,

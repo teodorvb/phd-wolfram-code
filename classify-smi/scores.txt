@@ -1,0 +1,34 @@
+=== Implemented ===
+cts_slm_l1
+cts_slm_l2
+cts loc sn l1
+cts loc sn l2
+clustering
+ratio_real_points_l1
+ratio_real_points_l2
+fragmentation_l1
+fragmentation_l2
+longest_range_l1
+longest_range_l2
+background l1
+background l2
+feature shape l1
+feature shape l2
+stepratio l12
+goes_to_zero
+signal to noise l1
+signal to noise l2
+dr12
+semdr12
+pos error 1
+pos error 2
+pos sigma mls 12
+pos sigma locmean 12
+pos density 12
+sec longest
+sec most pts
+count_sigma_mls_12
+int before after l1
+frames before after l1
+l12 gap
+l12 off level

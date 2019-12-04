@@ -50,28 +50,40 @@ def random_split(data, labels, split_point):
 
     return (train_data, train_labels, test_data, test_labels);
 
-def train_network(hus, data, labels, ep):
-    train_data, train_labels, test_data, test_labels = random_split(data, labels, 0.7);
+
+def train_network(data, hus, epoch):
+    train_data, train_labels, test_data, test_labels = data
+
 
     result = np.zeros((len(hus), 2));
-    for i in range(len(hus)):
+    for hus_id in range(len(hus)):
         model = tf.keras.Sequential([
-            tf.keras.layers.Dense(hus[i], input_shape=(np.shape(train_data)[1],), activation="tanh", kernel_initializer=tf.keras.initializers.GlorotNormal()),
+            tf.keras.layers.Dense(hus[hus_id],
+                                  input_shape=(np.shape(train_data)[1],),
+                                  activation="tanh", kernel_initializer=tf.keras.initializers.GlorotNormal()),
             tf.keras.layers.Dense(2, activation="softmax", kernel_initializer=tf.keras.initializers.GlorotNormal())
         ])
+
 
         model.compile(optimizer='adam',
                       loss = 'categorical_crossentropy',
                       metric=['accuracy']);
-        model.fit(train_data, train_labels, epochs=ep);
 
-        result[i, :] = np.array([f1_score(train_labels, model.predict(train_data)), f1_score(test_labels, model.predict(test_data))])
+        model.fit(train_data, train_labels, epochs=epoch, verbose=0);
+
+        result[hus_id, :] = np.array([f1_score(train_labels, model.predict(train_data)),
+                                      f1_score(test_labels, model.predict(test_data))])
+
     return result
 
+hus_num = 10;
+epoch = 1000;
 
+hus = np.array(list(range(hus_num))) + 1
 
 data = np.genfromtxt(sys.argv[1], delimiter=',');
 labels = np.genfromtxt(sys.argv[2], delimiter=',');
+output = sys.argv[3]
 
-result = train_network(np.array(range(2))+1, data, labels, 100)
-print(result)
+result = train_network(random_split(data, labels, 0.7), np.array(list(range(9)))+1, epoch);
+np.savetxt(output, result, delimiter=",")

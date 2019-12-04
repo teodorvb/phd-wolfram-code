@@ -55,3 +55,6 @@ compressPCA[data_, components_]:= Block[{evect},
   evect = Eigenvectors@Covariance@Keys@data;
   #1-> #2&@@@(Transpose[{#1.Transpose[evect[[1;;components]]], #2}] & @@ {Keys@data, Values@data})
 ]
+
+
+labelsToTensorFlow[labels_]:= If[#===yes, {1, 0}, {0, 1}]&/@labels;
