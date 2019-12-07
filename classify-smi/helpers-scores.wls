@@ -1,8 +1,8 @@
 #!/usr/bin/env wolframscript
 (* ::Package:: *)
 
-ExtractScores[record_]:= Block[{level1, level2},
-  {level1, level2} = getLevel12[record, levelsOldI];
+ExtractScores[record_, levelsIndex_]:= Block[{level1, level2},
+  {level1, level2} = getLevel12[record, levelsIndex];
   
   Flatten[{
     ctsSLM[record, level1],
@@ -112,3 +112,6 @@ If[ trackEnd - croppedStart+2<=croppedEnd,track[[2, trackEnd - croppedStart+2;;-
 ];
 Transpose[track] -> If[record[[categoryI]] == 1, yes, no]
 ];
+
+
+minLevelLength[levels_]:= Min[Total[#2 - #1 + 1&@@@#]&/@levels]

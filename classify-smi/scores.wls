@@ -14,9 +14,6 @@ dataImgI = 10;
 levelsOldI = 11;
 
 
-scoreLevelsI = levelsOldI;
-
-
 TrackLevel[level_, track_, trackStart_]:= Flatten[Apply[track[[Range[#1-trackStart+1,#2-trackStart+1]]]&,level,{1}], 1];
 firstFrameId[record_]:= First@First@record[[dataIntI]];
 
@@ -77,14 +74,14 @@ FeatureShapeRatios[imgData_, firstFrameId_, r_, imgr_, lvl_]:=N@#1/#2&@@Eigenval
 ][[imgr+1-r;;imgr+1+r,imgr+1-r;;imgr+1+r]]&/@ TrackLevel[lvl, imgData, firstFrameId];
 
 smiBgspsf = 1.2;
-smiBgq1I = Flatten@Table[If[# > 3.5smiBgspsf - Sqrt[2] && # < 5.5smiBgspsf + Sqrt[2]&@Sqrt[p^2 + q^2],(p+5)11 + q + 6, ##&[]],
+smiBgq1I = Flatten@Table[If[# > 3.5smiBgspsf - Sqrt[2.] && # < 5.5smiBgspsf + Sqrt[2.]&@Sqrt[p^2 + q^2],(p+5)11 + q + 6, ##&[]],
 {p, -5, 0}, {q, -5, 0}];
-smiBgq2I = Flatten@ Table[If[# > 3.5smiBgspsf - Sqrt[2] && # < 5.5smiBgspsf + Sqrt[2]&@Sqrt[p^2 + q^2],(p+5)11 + q + 6, ##&[]],
+smiBgq2I = Flatten@ Table[If[# > 3.5smiBgspsf - Sqrt[2.] && # < 5.5smiBgspsf + Sqrt[2.]&@Sqrt[p^2 + q^2],(p+5)11 + q + 6, ##&[]],
 {p, -5, 0}, {q, 1, 5}];
 
-smiBgq3I = Flatten@Table[If[# > 3.5smiBgspsf - Sqrt[2] && # < 5.5smiBgspsf + Sqrt[2]&@Sqrt[p^2 + q^2],(p+5)11 + q + 6, ##&[]],
+smiBgq3I = Flatten@Table[If[# > 3.5smiBgspsf - Sqrt[2.] && # < 5.5smiBgspsf + Sqrt[2.]&@Sqrt[p^2 + q^2],(p+5)11 + q + 6, ##&[]],
 {p, 1, 5}, {q, -5, 0}];
-smiBgq4I = Flatten@Table[If[# > 3.5smiBgspsf - Sqrt[2] && # < 5.5smiBgspsf + Sqrt[2]&@Sqrt[p^2 + q^2],(p+5)11 + q + 6,##&[]],
+smiBgq4I = Flatten@Table[If[# > 3.5smiBgspsf - Sqrt[2.] && # < 5.5smiBgspsf + Sqrt[2.]&@Sqrt[p^2 + q^2],(p+5)11 + q + 6,##&[]],
 {p, 1, 5}, {q, 1, 5}];
 smiBgAll = Join[smiBgq1I, smiBgq2I, smiBgq3I, smiBgq4I];
 
@@ -99,19 +96,19 @@ SmiBG[seq_]:= Mean@Take[#, Min[Length@#,10]]&@Sort[Function[rawImg,
    
 posSTD[p_]:= Block[{m},
   m = Mean@p;
-  Sqrt@Mean[ #.#&@(#-m) &/@p]
+  N@Sqrt@Mean[ #.#&@(#-m) &/@p]
 ];
-posSTDLoc[p_,w_]:= posSTD[p[[#-w;;#+w]]] &/@ Range[w+1, Length[p]-w];
+posSTDLoc[p_,w_]:= N@posSTD[p[[#-Floor[w/2];;#+Floor[w/2]]]] &/@ Range[Floor[w/2]+1, Length[p]-Floor[w/2]];
 
 
 getLevel12[record_, levelsI_]:=If[record[[levelsOrderI]]== "L1First",
-Sort[record[[levelsI]],Min][[1;;2]],
-Sort[record[[levelsI]],Max][[1;;2]]]
+Sort[record[[levelsI]],Min@#1 < Min@#2&][[1;;2]],
+Sort[record[[levelsI]],Max@#1 > Max@#2&][[1;;2]]]
 
 
 
 (* Implemented Scores *)
-level12Gap[record_, level1_, level2_]:=#2-#1-1&@@FindL12Gap[record, level1, level2];
+level12Gap[record_, level1_, level2_]:=N[#2-#1-1]&@@FindL12Gap[record, level1, level2];
 
 level12OffLevel[record_, level1_, level2_]:= Block[{
 l1Mean,
@@ -119,15 +116,13 @@ l1Std,
 l2Mean,
 l2Std,
 firstFrameid,
-track,
-levels},
+track},
 
 track = record[[dataIntI]];
 firstFrameid = track[[1, 1]];
-levels = record[[scoreLevelsI]];
 {l1Mean, l1Std} = {Mean@#, StandardDeviation@#}&@TrackLevel[level1, track, firstFrameid][[All, 2]];
 {l2Mean, l2Std} = {Mean@#, StandardDeviation@#}&@TrackLevel[level2, track, firstFrameid][[All, 2]];
-If[Level12Gap[record, level1, level2] == 0,
+If[level12Gap[record, level1, level2] == 0,
   {0., 0., 0.},
   {Min@#, Max@#, Mean@#}&@( Min/@Transpose[{
     Abs@(# - l1Mean)/l1Std,
@@ -147,7 +142,7 @@ intBeforeAfterL1[record_, level_]:=Block[{
   track = record[[dataIntI]];
   firstFrameid = track[[1, 1]];
   {l1Mean, l1Std} = {Mean@#, StandardDeviation@#}&@ TrackLevel[level, track, firstFrameid][[All, 2]];
-  If[Length@# == 0, {0., 0., 0.}, {Min@#, Max@#, Mean@#}]&@Abs[(#-l1Mean)]/l1Std&@ If[record[[levelsOrderI]] == "L1Last",
+  If[Length@# == 0, {0., 0., 0.}, {Min@#, Max@#, Mean@#}]&@N@Abs[(#-l1Mean)]/l1Std&@ If[record[[levelsOrderI]] == "L1Last",
     track[[Max@Flatten@level +2 - firstFrameid ;; record[[trackEndI]] - firstFrameid+1, 2]],
     track[[record[[trackStartI]] - firstFrameid+1 ;;Min@Flatten@level -firstFrameid, 2]]
   ]
@@ -155,7 +150,7 @@ intBeforeAfterL1[record_, level_]:=Block[{
 
 framesBeforeAfterL1[record_, level_]:= N@If[record[[levelsOrderI]]=="L1Last",
   record[[trackEndI]] - Max@Flatten@level,
-  Min@Flatten@level - record[[trackStartI]]
+  N@Min@Flatten@level - record[[trackStartI]]
 ];
 
 countSigmaMLS[record_, level1_, level2_]:= Block[{i1, i2},
@@ -167,20 +162,20 @@ countSigmaMLS[record_, level1_, level2_]:= Block[{i1, i2},
   ]
 ];
 secMostPoints[record_, level1_, level2_]:= Min[
-  Length@# - Total[#]&@TrackLevel[level1, record[[dataIntI, All, 7]], firstFrameId[record]],
-  Length@# - Total[#]&@TrackLevel[level2, record[[dataIntI, All, 7]], firstFrameId[record]]
+  N@Length@# - Total[#]&@TrackLevel[level1, record[[dataIntI, All, 7]], firstFrameId[record]],
+  N@Length@# - Total[#]&@TrackLevel[level2, record[[dataIntI, All, 7]], firstFrameId[record]]
 ];
 secLongest[record_, level1_, level2_]:= Min[
-  Total[#2- #1 + 1&@@@level1],
-  Total[#2- #1 + 1&@@@level2]
+  N@Total[#2- #1 + 1&@@@level1],
+  N@Total[#2- #1 + 1&@@@level2]
 ];
 posDensity[record_, level1_, level2_]:= Block[{p1, p2, m},
   p1 = TrackLevel[level1, record[[dataIntI, All, {4, 5}]], firstFrameId[record]];
   p2 = TrackLevel[level2, record[[dataIntI, All, {4, 5}]], firstFrameId[record]];
   m = Mean@Join[p1,p2];
   (
-  Length@p1 - Total[TrackLevel[level1, record[[dataIntI, All, 7]], firstFrameId[record] ]] +
-  Length@p2 - Total[TrackLevel[level2, record[[dataIntI, All, 7]], firstFrameId[record] ]]
+  N@Length@p1 - N@Total[TrackLevel[level1, record[[dataIntI, All, 7]], firstFrameId[record] ]] +
+  N@Length@p2 - N@Total[TrackLevel[level2, record[[dataIntI, All, 7]], firstFrameId[record] ]]
   )/Max[Norm[#-m,2]&/@Join[p1,p2]]^2 Pi
 ]
 posSigmaLocMean[record_,level1_,level2_]:= Block[{p1, p2},
@@ -204,9 +199,9 @@ ctsLocalSN[record_, level_]:= Mean@MovingMap[
 
 posError[record_, level_]:= Block[{l, p, m},
   p = TrackLevel[level, record[[dataIntI, All, {4, 5}]], firstFrameId[record]];
-  l = Length@p;
-  m = Mean@p;
-  Sqrt[1/l] Sqrt[1/l Total[ Total[(#-m)^2]&/@p ]]
+  l = N@Length@p;
+  m = N@Mean@p;
+  Sqrt[1.0/l] Sqrt[1.0/l Total[ Total[(#-m)^2]&/@p ]]
 ]
 
 semDR12[record_, level1_, level2_]:= Block[{ps1, ps2, meanP1, meanP2, varP1, varP2},
@@ -239,7 +234,7 @@ goesToZero[record_]:=Mean@#/StandardDeviation@#&@If[record[[levelsOrderI]] == "L
   ExtractFramesBefore[record, 10]
 ][[All, 2]];
 
-ratioRealPoints[record_, level_]:= (Length@# - Total@#)/Length@# &@TrackLevel[level, record[[dataIntI, All, 7]], firstFrameId[[record]]];
+ratioRealPoints[record_, level_]:= (Length@# - Total@#)/Length@# &@TrackLevel[level, record[[dataIntI, All, 7]], firstFrameId[record]];
 fragmentation[record_, level_]:=N@Length[level]-1;
 longestRange[record_, level_]:=N@Max[#2-#1+1&@@@level];
 signalToNoise[record_, level_]:= Mean@#/StandardDeviation@#&@TrackLevel[level, record[[dataIntI]][[All, 2]], firstFrameId[record] ];

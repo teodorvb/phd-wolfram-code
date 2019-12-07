@@ -41,13 +41,13 @@ where
  ]);
  
 sqlIdsList[ids_]:="("<>StringTake[#, StringLength[#]-2]&@StringJoin@Flatten@({ToString[#], ", "}&/@ids)<>")";
-
+RemoveShorts[levels_]:= Select[levels, Total[#2 - #1+1&@@@#] > 5&];
 SmiUnpackRecords  ={
   #1,#2,#3,#4,#5,#6,
   If[!#10 === Null, ToExpression[StringReplace[#10, {"e+" :> "*^", "e-" :> "*^-"}]], {}],
-  ToExpression[#11],
+  RemoveShorts@ToExpression[#11],
   ArrayReshape[ImportByteArray[ByteArray[#12],"Real32"], {#7, #8}],ArrayReshape[ImportByteArray[ByteArray[#13],"Real32"], {#7, #9}],
-  ToExpression[#14]
+  RemoveShorts@ToExpression[#14]
 }&;
 
 
