@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       158,          7]
-NotebookDataLength[   2526253,      44032]
+NotebookDataLength[   2526251,      44032]
 NotebookOptionsPosition[   2505850,      43726]
-NotebookOutlinePosition[   2506214,      43742]
-CellTagsIndexPosition[   2506171,      43739]
+NotebookOutlinePosition[   2506212,      43742]
+CellTagsIndexPosition[   2506169,      43739]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -43726,7 +43726,7 @@ qbdy7xzVDw6K0kz/R85MSVf95GZJvZ8uOCyzMhb8D1F797g=
 },
 WindowToolbars->"RulerBar",
 WindowSize->{960, 1016},
-WindowMargins->{{Automatic, 46}, {-12, Automatic}},
+WindowMargins->{{Automatic, 46}, {0, Automatic}},
 FrontEndVersion->"11.3 for Linux x86 (64-bit) (March 6, 2018)",
 StyleDefinitions->"Default.nb"
 ]

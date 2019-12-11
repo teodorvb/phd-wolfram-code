@@ -1,0 +1,5 @@
+* TODO Extract real data set with old LD and classify
+* TODO Extract real data set with new LD and classify
+* TODO Create simulated data set with the same track imbalance as the real DS
+  Real data set the positive class is 0.01369 times the negative class.
+* TODO Classify the simulated data set with old and with new LD

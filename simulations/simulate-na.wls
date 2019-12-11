@@ -8,8 +8,6 @@ fI = 80;
 fB = 30;
 
 
-Print[Length[$ScriptCommandLine]]
-Print[$ScriptCommandLine]
 If[Length[$ScriptCommandLine] < 2, 
   Print["Need to specify the first batchid"];
   Exit[]
@@ -18,15 +16,12 @@ If[Length[$ScriptCommandLine] < 2,
 
 batches = 10;
 round = 0.001;
-firstBatchId = $ScriptCommandLine[[2]];
-Print[firstBatchId];
-Exit[];
-
+firstBatchId = ToExpression[$ScriptCommandLine[[2]]];
 
 (* StepRatio *)
 
 (* In this simulation the ratio between level 2 and level 1 is different from 2.0 *)
-ndata =addNoise@Round[#, round]&@Table[
+ndata = addNoise@Round[#, round]&@Table[
   Block[{
     trackNum = 3,
     trackDist = 25,
@@ -71,6 +66,7 @@ ndata =addNoise@Round[#, round]&@Table[
 ],batches];
 
 exportSimulatedData["na-stepratio-batch_", firstBatchId, ndata];
+
 
 
 (* Additional Fluorophore 1 *)

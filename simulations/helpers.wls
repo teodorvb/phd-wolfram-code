@@ -40,16 +40,18 @@ addNoise[data_]:=Block[{noiseData, noise, noiseIndex, index, idata, i, ix, iy, d
   d = Flatten@data;
   ud = Union@d;
   
+  Print["Counting ", Length@ud, " Values"];
+  
   (* Count how many to draw from each distribution *)
   CloseKernels[]; LaunchKernels[];
   counts = ParallelMap[{#, Count[d, #]}&, ud];
-
+  Print["Adding noise ", counts];
   noise = <|
    Parallelize[#1-> GenerateNoise[#1, #2]& @@@ counts]|>;
   noiseIndex = <|
     #-> 1&/@(Keys@noise)
   |>;
-
+  Print["Modifying Data"];
   For[idata = 1, idata <= Length[data],idata++,
     For[i = 1, i <= Length@data[[idata]], i++,
       For[ix = 1, ix <= Length@data[[idata, i]], ix++,
@@ -325,6 +327,7 @@ exportSimulatedData[prefix_, firstBatchId_, ndata_, states_]:= Block[{},
 ];
 
 exportSimulatedData[prefix_, firstBatchId_, ndata_]:= Block[{},
+  Print["Exporting Data..."];
   Put[#2, FileNameJoin[{
     Directory[],
     "data.bin",
