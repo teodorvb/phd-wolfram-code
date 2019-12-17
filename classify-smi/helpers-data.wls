@@ -1,27 +1,12 @@
 #!/usr/bin/env wolframscript
 (* ::Package:: *)
 
-SmiMakeDBIdBatches[data_, batch_]:= Function[{rem},
-If[ rem != 0,
-Append[ArrayReshape[#, {Floor[Length@#/batch], batch}], #[[-rem;;-1]]]&@ data,
-ArrayReshape[#,{Floor[Length@#/batch], batch}]&@ data
-]
-] @ Mod[Length@data, batch];
+readTracksByIdsGetBatches[ids_]:="("<>StringRiffle[(ToString/@Flatten@#), ","]<>")"&/@Join[Partition[ids, 1000], {ids[[Floor[Length[ids]/1000] *1000+1;;-1]]}];
 
-SmiReadPositiveIds[conn_,dataSetId_]:=Flatten@SQLExecute[conn, "select id from smidata
-where
-    dataset_id = "<>ToString[dataSetId]<> "
-and lda_filter > 0.010
-and category = 1"];
-SmiReadNegativeIds[conn_, dataSetId_]:= Flatten@SQLExecute[conn, "select id from smidata
-where
-    dataset_id = "<>ToString[dataSetId]<>"
-and lda_filter > 0.010
-and category = 0"];
-
-SmiReadBatch[conn_, batchIds_, transform_]:= transform/@(
-SmiUnpackRecords@@@
-  SQLExecute[conn, "select 
+readTracksByIds[conn_,ids_, levelsIndex_]:=Block[{},
+  Flatten[
+    (ExtractScores[#,levelsIndex]&/@Select[
+      SmiUnpackRecords@@@ SQLExecute[conn, "select 
 source_data_set, 
 source_track_id, 
 track_start, 
@@ -34,13 +19,18 @@ frame_dim_img,
 scores, 
 levels, 
 data_int, 
-data_img
+data_img,
+levels_old
 from smidata
-where 
- id in "<> sqlIdsList[batchIds]
- ]);
- 
-sqlIdsList[ids_]:="("<>StringTake[#, StringLength[#]-2]&@StringJoin@Flatten@({ToString[#], ", "}&/@ids)<>")";
+where
+   id in "<>#
+],
+      Length[#[[levelsIndex]]]>1&& minLevelLength[#[[levelsIndex]]]> 10&]
+    ) &/@ readTracksByIdsGetBatches[ids]
+  ]
+]
+
+
 RemoveShorts[levels_]:= Select[levels, Total[#2 - #1+1&@@@#] > 5&];
 SmiUnpackRecords  ={
   #1,#2,#3,#4,#5,#6,
@@ -57,4 +47,8 @@ compressPCA[data_, components_]:= Block[{evect},
 ]
 
 
-labelsToTensorFlow[labels_]:= If[#===yes, {1, 0}, {0, 1}]&/@labels;
+whitenData[data_]:=Block[{m, s},
+  m = Mean@Keys@data;
+  s = StandardDeviation@Keys@data;
+  (#1-m)/s -> #2 &@@@ Transpose[{Keys@data, Values@data}]
+]
