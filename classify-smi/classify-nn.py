@@ -57,6 +57,7 @@ def train_network(data, hus, epoch):
 
     result = np.zeros((len(hus), 2));
     for hus_id in range(len(hus)):
+        print("training network with ", hus[hus_id], " hidden units")
         model = tf.keras.Sequential([
             tf.keras.layers.Dense(hus[hus_id],
                                   input_shape=(np.shape(train_data)[1],),
