@@ -70,13 +70,14 @@ def train_network(data, hus, epoch):
                       loss = 'categorical_crossentropy',
                       metric=['accuracy']);
 
-        model.fit(train_data, train_labels, epochs=epoch, verbose=0);
+        model.fit(train_data, train_labels, epochs=epoch, verbose=3);
 
         result[hus_id, :] = np.array([f1_score(train_labels, model.predict(train_data)),
                                       f1_score(test_labels, model.predict(test_data))])
 
     return result
 
+print("starting script")
 hus_num = 10;
 epoch = 1000;
 
@@ -85,6 +86,7 @@ hus = np.array(list(range(hus_num))) + 1
 data = np.genfromtxt(sys.argv[1], delimiter=',');
 labels = np.genfromtxt(sys.argv[2], delimiter=',');
 output = sys.argv[3]
+
 
 result = train_network(random_split(data, labels, 0.7), np.array(list(range(9)))+1, epoch);
 np.savetxt(output, result, delimiter=",")

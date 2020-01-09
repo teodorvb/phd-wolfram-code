@@ -25,7 +25,7 @@ Export[\"$tmpdir/labels.csv\", If[#===yes, {1, 0}, {0, 1}]&/@Values@data];
 echo data exported to csv
 
 for i in {1..10}; do
-    python classify-nn.py $tmpdir/data.csv $tmpdir/labels.csv $tmpdir/res-$i.csv &>$tmpdir/$i.log &
+    python -u classify-nn.py $tmpdir/data.csv $tmpdir/labels.csv $tmpdir/res-$i.csv &>$tmpdir/$i.log &
 done
 
 function filesMissing() {
