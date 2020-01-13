@@ -16,6 +16,8 @@ tmpdir=$dirname$dircount
 echo Will use directory $tmpdir
 mkdir $tmpdir
 
+echo $1 >> $tmpdir/source
+
 echo "
 data = BinaryDeserialize[<<\"${1}\"];
 Export[\"$tmpdir/data.csv\", Keys@data];
@@ -43,8 +45,6 @@ while filesMissing 10 ; do
 done
 
 echo Calculation finished. Exporting result...
-echo "
-BinarySerialize[Import[\"$tmpdir/res-\"<>ToString[#]<>\".csv\"] & /@Range[10]] >> \"results/$(basename #${1})\"
-" | wolfram &>>$tmpdir/wolfram.log
+echo "BinarySerialize[Import[\"$tmpdir/res-\"<>ToString[#]<>\".csv\"] & /@Range[10]] >> \"results/$(basename ${1})\"" | wolfram &>>$tmpdir/wolfram.log
 
 rm $tmpdir -r
