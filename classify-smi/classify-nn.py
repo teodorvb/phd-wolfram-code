@@ -82,11 +82,12 @@ hus_num = 10;
 epoch = 1000;
 
 hus = np.array(list(range(hus_num))) + 1
+#hus = np.array([10, 15, 20, 25, 30])
 
 data = np.genfromtxt(sys.argv[1], delimiter=',');
 labels = np.genfromtxt(sys.argv[2], delimiter=',');
 output = sys.argv[3]
 
 
-result = train_network(random_split(data, labels, 0.7), np.array(list(range(9)))+1, epoch);
+result = train_network(random_split(data, labels, 0.7), hus, epoch);
 np.savetxt(output, result, delimiter=",")
