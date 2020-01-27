@@ -1,0 +1,9 @@
+To run cmake an environment variable MATHEMATICA_ROOT is required, which points to where Mathematica is installed:
+
+env MATHEMATICA_CMAKE=<path-to-mathematica-root> cmake <path-to-src>
+
+When compiled to use the export program need to copy
+/usr/local/Wolfram/Mathematica/11.3/SystemFiles/Libraries/Linux-x86-64/libWSTP64i4.so
+libexport_hdf5.so
+
+to a location under ldconfig

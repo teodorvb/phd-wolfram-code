@@ -347,6 +347,21 @@ exportSimulatedData[prefix_, firstBatchId_, ndata_]:= Block[{},
 
 ];
 
+exportSimulatedData[prefix_, ndata_]:= Block[{},
+  Print["Exporting Data..."];
+  Put[First@ndata, FileNameJoin[{
+    Directory[],
+    "data.bin",
+    getDataName[prefix, Length[First@ndata], 80, 30]<>".bin"}]
+  ];
+  
+  exportData[Directory[],
+    getDataName[prefix, Length[First@ndata], 80, 30], 
+    First@ndata
+  ];
+
+];
+
 
 (* Functions which generate data and export it *)
 exportBias[dir_,fsize_]:=Block[{bias, biascfg, ix, frameBias},
