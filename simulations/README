@@ -1,0 +1,37 @@
+To run the simulations for adjusting the parameters
+  Run
+   ./adjust-parameters.wls
+
+To run the level detection simulations
+  For simulation with levels chosen by markov chain run
+    ./level-detection-markov-chain.wls <first-batch-id>
+  The script will create 10 batches with simulated tracks.
+
+  For Simulation with level manually chosen run:
+    ./level-detection-manual.wls
+  The script will create 1 batch with simulated tracks.
+
+To run the simulations for classify smi
+  For analysale tracks
+    ./classify-smi-analysable.wls <first-batch-id>
+  The script will generate 10 batches of analysable tracks.
+
+  For non analysable tracks
+    ./classify-smi-na.wls <first-batch-id>
+  The script will create 10 batches with 9 cases for each batch of non
+  analysable tracks.
+
+To run the simulations for refining track selection process
+  Run with no arguments
+    ./refining-track-selection.wls
+  The script will create analysale and non-analysable tracks. The analysable
+  tracks should have some which can be used in a study (ci < 10nm sep < 60nm)
+  and some which cannot be used.
+
+Each simulation will need beads.
+  To crete them run
+    ./beads.wls
+   The script will create beads.
+
+
+    
