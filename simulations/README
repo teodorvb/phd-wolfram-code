@@ -1,3 +1,6 @@
+Before running simulations the library for exporting in HDF5 needs to be
+created. To do that follow the instructions in exportHDF5/src/README
+
 To run the simulations for adjusting the parameters
   Run
    ./adjust-parameters.wls
