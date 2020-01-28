@@ -58,7 +58,7 @@ ndata = addNoise@Round[#, round]&@{
 ]
 };
 
-exportSimulatedData["rntsp-stepratio", ndata];
+exportSimulatedData["rtsp-stepratio", ndata];
 
 
 (* Extrapolated Intensity 1 *)
@@ -110,7 +110,7 @@ on0 = GenerateFrame[Flatten@Table[{0, 0, 0}, fnum^2],fI,fP,30, frameSize];
 Join[Table[on3, 100],Table[on2, 100], Table[on1, 20],Table[on0, 20]]
 ]};
 
-exportSimulatedData["rntsp-extr-int1", ndata];
+exportSimulatedData["rtsp-extr-int1", ndata];
 
 
 (* Extrapolated Intensity 2 *)
@@ -162,4 +162,98 @@ on0 = GenerateFrame[Flatten@Table[{0, 0, 0}, fnum^2],fI,fP, 30, frameSize];
 Join[Table[on0, 20], Table[on1,20], Table[on2, 100], Table[on3, 100]]
 ]};
 
-exportSimulatedData["rntsp-extr-int2", ndata];
+exportSimulatedData["rtsp-extr-int2", ndata];
+
+
+(* Has additional fluorescence in the Neighbourhood *)
+
+ndata = addNoise@Round[#, round]&@{
+  Block[{
+    fnum = 3,
+    fInt = 80,
+    fSep = 10nm,
+    fDist,fAddI,angle, 
+    fI, fP,
+    flfrsOn3, flfrsOn2, flfrsOn0,
+    on3, on2, on0},
+    
+    fDist =N@ frameSize/(fnum+1);
+    fAddI = RandomReal[NormalDistribution[60, 10],12];
+    angle = RandomReal[UniformDistribution[{0, 2*Pi}], 12];
+    
+    fI = Flatten@Join[
+      Table[{fInt, fInt, fAddI[[i]],  fAddI[[i+1]]},{i, 1, 6, 2}],
+      Table[{fInt, fInt, fAddI[[i]]}, {i, 7, 12}]
+      ];
+    
+    fP = N@Flatten[
+      Join[
+        Table[{
+          {x*fDist, y*fDist},
+          {x*fDist + fSep, y*fDist},
+          {x*fDist + 5*Cos[angle[[(x-1)*fnum +2*y - 1]] ], y*fDist +5*Sin[angle[[(x-1)*fnum + 2*y - 1]]]},
+          {x*fDist + 5*Cos[angle[[(x-1)*fnum + 2*y]] ], y*fDist +5*Sin[angle[[(x-1)*fnum + 2*y]]]}
+        }, {x, 1, 1}, {y, 1, fnum}],
+        
+        Table[{
+          {x*fDist, y*fDist},
+          {x*fDist + fSep, y*fDist},
+          {x*fDist + 5*Cos[angle[[(x-1)*fnum +y +3]] ], y*fDist +5*Sin[angle[[(x-1)*fnum + y + 3]]]}
+        }, {x, 2, fnum}, {y, 1, fnum}]
+      ],
+    2];
+  
+    flfrsOn3 = Flatten@Join[Table[{1, 1, 1, 1}, 3], Table[{1, 1, 1}, 6]];
+    flfrsOn2 = Flatten@Join[Table[{1, 0, 1, 1}, 3], Table[{1, 1, 1}, 6]];
+    flfrsOn0 = Table[0, 30];
+    
+    on3=Quiet@ GenerateFrame[flfrsOn3,fI,fP, 30, frameSize];on2 =Quiet@GenerateFrame[flfrsOn2,fI,fP, 30, frameSize];
+    on0 =Quiet@GenerateFrame[flfrsOn0,fI,fP, 30, frameSize];
+    Join[ Table[on3, 100],Table[on2, 100], Table[on0, 20]]
+  ]
+}
+exportSimulatedData["rtsp-neighbour", ndata];
+
+
+(* Tracks with one level *)
+
+ndata = addNoise@Round[#, round]&@{
+Block[{
+fnum = 3,
+fInt = 80,
+fSep = 10nm,
+fI, fP,
+on9, on8,on7,on6,on5,on4, on3, on2, on1, on0,
+fDist},
+fDist =N@ frameSize/(fnum+1);
+fI = Table[fInt, fnum^2];
+
+fP = N@Flatten[Table[{x*fDist, y * fDist},{x, 1, fnum}, {y, 1, fnum}], 1];
+
+on9 = Quiet@GenerateFrame[{1, 1, 1, 1, 1, 1, 1, 1, 1}, fI, fP, 30, frameSize];
+on8 = Quiet@GenerateFrame[{1, 1, 1, 1, 1, 1, 1, 1, 0}, fI, fP, 30, frameSize];
+on7 = Quiet@GenerateFrame[{1, 1, 1, 1, 1, 1, 1, 0, 0}, fI, fP, 30, frameSize];
+on6 = Quiet@GenerateFrame[{1, 1, 1, 1, 1, 1, 0, 0, 0}, fI, fP, 30, frameSize];
+on5 = Quiet@GenerateFrame[{1, 1, 1, 1, 1, 0, 0, 0, 0}, fI, fP, 30, frameSize];
+on4 = Quiet@GenerateFrame[{1, 1, 1, 1, 0, 0, 0, 0, 0}, fI, fP, 30, frameSize];
+on3 = Quiet@GenerateFrame[{1, 1, 1, 0, 0, 0, 0, 0, 0}, fI, fP, 30, frameSize];
+on2 = Quiet@GenerateFrame[{1, 1, 0, 0, 0, 0, 0, 0, 0}, fI, fP, 30, frameSize];
+on1 = Quiet@GenerateFrame[{1, 0, 0, 0, 0, 0, 0, 0, 0}, fI, fP, 30, frameSize];
+on0 = Quiet@GenerateFrame[{0, 0, 0, 0, 0, 0, 0, 0, 0}, fI, fP, 30, frameSize];
+
+Join[
+Table[on9, 10],
+Table[on8, 10], 
+Table[on7, 10],
+Table[on6, 10],
+Table[on5, 10],
+Table[on4, 10],
+Table[on3, 10],
+Table[on2, 10],
+Table[on1, 10],
+Table[on0, 10]
+]
+]
+}
+
+exportSimulatedData["rtsp-1lvl", ndata];
