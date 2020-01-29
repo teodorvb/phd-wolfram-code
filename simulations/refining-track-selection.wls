@@ -10,6 +10,88 @@ fB = 30;
 
 round = 0.001;
 
+
+(* Analysable tracks which are used *)
+
+ndata = addNoise@Round[#, round]&@{
+Block[{fnum, fInt, fDist, fI, fSep, index, fP, on2, on1, on0},
+fnum = 3;
+fInt = 80;
+
+fDist = N@frameSize/(fnum+1);
+fI = Flatten@Table[{fInt, fInt}, fnum^2];
+fSep = {5nm, 10nm, 15nm, 20nm, 25nm, 30nm, 35nm, 40nm,50nm}; 
+
+index = 1;
+fP = Flatten[ Table[{
+{x fDist, y fDist},
+{x fDist+fSep[[index++]], y fDist}
+}, {x, 1, fnum}, {y, 1, fnum}],
+2];
+
+on2 = Quiet@GenerateFrame[Flatten@Table[{1, 1}, fnum^2], fI, fP, 30, frameSize];
+on1 = Quiet@GenerateFrame[Flatten@Table[{1, 0}, fnum^2], fI, fP, 30, frameSize];
+on0 = Quiet@GenerateFrame[Flatten@Table[{0, 0}, fnum^2], fI, fP, 30, frameSize];
+Join[Table[on2, 100], Table[on1, 100], Table[on0, 20]]
+]};
+
+exportSimulatedData["rtsp-an-used", ndata];
+
+
+(* Analysable tracks which are unused with large separation *)
+
+ndata = addNoise@Round[#, round]&@{
+Block[{fnum, fInt, fDist, fI, fSep, index, fP, on2, on1, on0},
+fnum = 3;
+fInt = 80;
+
+fDist = N@frameSize/(fnum+1);
+fI = Flatten@Table[{fInt, fInt}, fnum^2];
+fSep = {80nm, 90nm, 100nm, 110nm, 120nm, 130nm, 140nm, 150nm, 160nm}; 
+
+index = 1;
+fP = Flatten[ Table[{
+{x fDist, y fDist},
+{x fDist+fSep[[index++]], y fDist}
+}, {x, 1, fnum}, {y, 1, fnum}],
+2];
+
+on2 = Quiet@GenerateFrame[Flatten@Table[{1, 1}, fnum^2], fI, fP, 30, frameSize];
+on1 = Quiet@GenerateFrame[Flatten@Table[{1, 0}, fnum^2], fI, fP, 30, frameSize];
+on0 = Quiet@GenerateFrame[Flatten@Table[{0, 0}, fnum^2], fI, fP, 30, frameSize];
+Join[Table[on2, 100], Table[on1, 100], Table[on0, 20]]
+]};
+
+exportSimulatedData["rtsp-an-sep_gt60", ndata];
+
+
+(* Analysable tracks which are unused with large ci *)
+
+ndata = addNoise@Round[#, round]&@{
+Block[{fnum, fInt, fDist, fI, fSep, index, fP, on2, on1, on0},
+fnum = 3;
+fInt = 30;
+
+fDist = N@frameSize/(fnum+1);
+fI = Flatten@Table[{fInt, fInt}, fnum^2];
+fSep = {5nm, 10nm, 15nm, 20nm, 25nm, 30nm, 35nm, 40nm,50nm}; 
+
+index = 1;
+fP = Flatten[ Table[{
+{x fDist, y fDist},
+{x fDist+fSep[[index++]], y fDist}
+}, {x, 1, fnum}, {y, 1, fnum}],
+2];
+
+on2 = Quiet@GenerateFrame[Flatten@Table[{1, 1}, fnum^2], fI, fP, 30, frameSize];
+on1 = Quiet@GenerateFrame[Flatten@Table[{1, 0}, fnum^2], fI, fP, 30, frameSize];
+on0 = Quiet@GenerateFrame[Flatten@Table[{0, 0}, fnum^2], fI, fP, 30, frameSize];
+Join[Table[on2, 20], Table[on1, 20], Table[on0, 20]]
+]};
+
+exportSimulatedData["rtsp-an-ci_gt60", ndata];
+
+
 (* StepRatio *)
 
 (* In this simulation the ratio between level 2 and level 1 is different from 2.0 *)
@@ -257,3 +339,39 @@ Table[on0, 10]
 }
 
 exportSimulatedData["rtsp-1lvl", ndata];
+
+
+(* Tracks not ending with level 1 *)
+
+addNoise@Round[#, round]&@{
+Block[{
+fnum, fInt, fSep,
+fDist, fI, fP, on2a, on2b, on1, on0,
+index,
+fAddInt
+},
+index = 1;
+fnum = 3;
+fInt = 80;
+fSep = 10nm;
+
+fDist = N@frameSize/(fnum+1);
+fAddInt = RandomReal[NormalDistribution[120, 20], fnum^2];
+fI = Flatten@Table[{fInt, fInt, fAddInt[[index++]]}, fnum^2];
+
+fP = Flatten[ Table[{
+{x fDist, y fDist},
+{x fDist+fSep, y fDist},
+{x fDist, y fDist + fSep}
+}, {x, 1, fnum}, {y, 1, fnum}],
+2];
+
+on2a = Quiet@GenerateFrame[Flatten@Table[{1, 1, 0}, fnum^2],fI, fP, 30, frameSize];
+on2b = Quiet@GenerateFrame[Flatten@Table[{1, 0, 1}, fnum^2],fI, fP, 30, frameSize];
+on1 = Quiet@GenerateFrame[Flatten@Table[{1, 0, 0}, fnum^2], fI, fP, 30, frameSize];
+on0 = Quiet@GenerateFrame[Flatten@Table[{0, 0, 0}, fnum^2], fI, fP, 30, frameSize];
+Join[Table[on2a, 50], Table[on1,50], Table[on2b, 50], Table[on0, 20]]
+]
+}
+
+exportSimulatedData["rtsp-end-lvl2", ndata];

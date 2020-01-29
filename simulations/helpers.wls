@@ -45,7 +45,7 @@ addNoise[data_]:=Block[{noiseData, noise, noiseIndex, index, idata, i, ix, iy, d
   (* Count how many to draw from each distribution *)
   CloseKernels[]; LaunchKernels[];
   counts = ParallelMap[{#, Count[d, #]}&, ud];
-  Print["Adding noise ", counts];
+  Print["Adding noise "];
   noise = <|
    Parallelize[#1-> GenerateNoise[#1, #2]& @@@ counts]|>;
   noiseIndex = <|
