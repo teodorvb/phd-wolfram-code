@@ -11,6 +11,42 @@ fB = 30;
 round = 0.001;
 
 
+(* Tracks not ending with level 3 *)
+
+ndata = addNoise@Round[#, round]&@{
+Block[{
+fnum, fInt, fSep,
+fDist, fI, fP, on2a, on2b, on1, on0,
+index,
+fAddInt
+},
+index = 1;
+fnum = 3;
+fInt = 80;
+fSep = 10nm;
+
+fDist = N@frameSize/(fnum+1);
+fAddInt = RandomReal[NormalDistribution[120, 20], fnum^2];
+fI = Flatten@Table[{fInt, fInt, fAddInt[[index++]]}, fnum^2];
+
+fP = Flatten[ Table[{
+{x fDist, y fDist},
+{x fDist+fSep, y fDist},
+{x fDist, y fDist + fSep}
+}, {x, 1, fnum}, {y, 1, fnum}],
+2];
+
+on2a = Quiet@GenerateFrame[Flatten@Table[{1, 1, 0}, fnum^2],fI, fP, 30, frameSize];
+on2b = Quiet@GenerateFrame[Flatten@Table[{1, 0, 1}, fnum^2],fI, fP, 30, frameSize];
+on1 = Quiet@GenerateFrame[Flatten@Table[{1, 0, 0}, fnum^2], fI, fP, 30, frameSize];
+on0 = Quiet@GenerateFrame[Flatten@Table[{0, 0, 0}, fnum^2], fI, fP, 30, frameSize];
+Join[Table[on2a, 50], Table[on1,50], Table[on2b, 50], Table[on0, 20]]
+]
+}
+
+exportSimulatedData["rtsp-end-lvl3", ndata];
+
+
 (* Analysable tracks which are used *)
 
 ndata = addNoise@Round[#, round]&@{
@@ -303,7 +339,6 @@ ndata = addNoise@Round[#, round]&@{
 Block[{
 fnum = 3,
 fInt = 80,
-fSep = 10nm,
 fI, fP,
 on9, on8,on7,on6,on5,on4, on3, on2, on1, on0,
 fDist},
@@ -339,39 +374,3 @@ Table[on0, 10]
 }
 
 exportSimulatedData["rtsp-1lvl", ndata];
-
-
-(* Tracks not ending with level 1 *)
-
-addNoise@Round[#, round]&@{
-Block[{
-fnum, fInt, fSep,
-fDist, fI, fP, on2a, on2b, on1, on0,
-index,
-fAddInt
-},
-index = 1;
-fnum = 3;
-fInt = 80;
-fSep = 10nm;
-
-fDist = N@frameSize/(fnum+1);
-fAddInt = RandomReal[NormalDistribution[120, 20], fnum^2];
-fI = Flatten@Table[{fInt, fInt, fAddInt[[index++]]}, fnum^2];
-
-fP = Flatten[ Table[{
-{x fDist, y fDist},
-{x fDist+fSep, y fDist},
-{x fDist, y fDist + fSep}
-}, {x, 1, fnum}, {y, 1, fnum}],
-2];
-
-on2a = Quiet@GenerateFrame[Flatten@Table[{1, 1, 0}, fnum^2],fI, fP, 30, frameSize];
-on2b = Quiet@GenerateFrame[Flatten@Table[{1, 0, 1}, fnum^2],fI, fP, 30, frameSize];
-on1 = Quiet@GenerateFrame[Flatten@Table[{1, 0, 0}, fnum^2], fI, fP, 30, frameSize];
-on0 = Quiet@GenerateFrame[Flatten@Table[{0, 0, 0}, fnum^2], fI, fP, 30, frameSize];
-Join[Table[on2a, 50], Table[on1,50], Table[on2b, 50], Table[on0, 20]]
-]
-}
-
-exportSimulatedData["rtsp-end-lvl2", ndata];
