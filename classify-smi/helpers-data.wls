@@ -36,7 +36,8 @@ SmiUnpackRecords  ={
   #1,#2,#3,#4,#5,#6,
   If[!#10 === Null, ToExpression[StringReplace[#10, {"e+" :> "*^", "e-" :> "*^-"}]], {}],
   RemoveShorts@ToExpression[#11],
-  ArrayReshape[ImportByteArray[ByteArray[#12],"Real32"], {#7, #8}],ArrayReshape[ImportByteArray[ByteArray[#13],"Real32"], {#7, #9}],
+  ArrayReshape[ImportByteArray[ByteArray[#12],"Real32"], {#7, #8}],
+  ArrayReshape[ImportByteArray[ByteArray[#13],"Real32"], {#7, #9}],
   RemoveShorts@ToExpression[#14]
 }&;
 
