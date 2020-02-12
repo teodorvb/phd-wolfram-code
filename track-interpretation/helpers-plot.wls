@@ -1,7 +1,7 @@
 #!/usr/bin/env wolframscript
 (* ::Package:: *)
 
-levelMeanInt[record_, level_]:= Mean@Flatten[record[[dataIntI, #[[1]];;#[[2]], 2]]&/@ level];
+levelMeanInt[record_, level_]:= Mean@Flatten[record[[dataIntI, #[[1]] - First@First@record[[dataIntI]]+1;;#[[2]] - First@First@record[[dataIntI]]+1, 2]]&/@ level];
 
 plotLevelsGetData[record_,level_]:=Block[{meanInt},
 meanInt = levelMeanInt[record, level];
