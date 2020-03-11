@@ -4,3 +4,4 @@ classify-smi/train-hmm/build
 simulations/exportHDF5/build
 simulations/export_flimp
 classify-smi/fit_hmm
+nanostructure/export_flimp
