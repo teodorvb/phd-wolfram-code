@@ -40,7 +40,7 @@ steps
 
 
 getSteps[network_, track_]:= Function[{d}, Block[{steps = {}},
-If[#1[yes]/#1[no]> 0.01&@network[Values@#, "Probabilities"], AppendTo[steps, Keys@#]]&/@(#-> d[[#-hw;;#+hw]] &/@ Range[hw+1, Length[d]-hw]);
+If[#1[yes]/#1[no]> 0.01 &@network[Values@#, "Probabilities"], AppendTo[steps, Keys@#]]&/@(#-> d[[#-hw;;#+hw]] &/@ Range[hw+1, Length[d]-hw]);
 steps
 ]
 ]@track[[dataIntI]][[All,counts]];

@@ -18,6 +18,21 @@ ToExpression[#7]
 }&;
 
 
+readByTrackIds[ids_]:= unpackDBData@@@SQLExecute[conn, "select
+source_data_set,
+source_track_id,
+track_size,
+frame_dim_int,
+levels,
+levels_old,
+levels_new,
+data_int
+from smidata
+where
+	id in ("<> StringRiffle[ToString/@Flatten@ids, ","]<>")
+order by source_data_set, source_track_id"];
+
+
 readDataSet[id_]:= unpackDBData@@@SQLExecute[conn, "select 
 source_data_set, 
 source_track_id,
