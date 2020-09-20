@@ -37,4 +37,13 @@ labelMC[testT, hw]
 ]
 
 
+whitenData[data_] := whitenData[data, Mean@Keys@data, StandardDeviation@Keys@data];
 whitenData[data_, m_, sd_]:=#1-> #2 &@@@ Transpose[{(#-m)/sd&/@Keys@data, Values@data}];
+
+
+labelManual[tracks_, steps_, hw_]:= Flatten[labelManualTrack[#, steps, hw]&/@ tracks];
+labelManualTrack[track_, steps_, hw_]:=Block[{intensity, positive},
+positive = steps[track[[{1, 2}]]];
+intensity = track[[dataIntI, All, 2]];
+intensity[[#-hw;; #+hw]]-> If[Count[positive, #]!= 0, yes, no]&/@Range[hw+1, Length[intensity]-hw]
+];
